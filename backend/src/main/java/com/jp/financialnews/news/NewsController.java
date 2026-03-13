@@ -1,12 +1,11 @@
 package com.jp.financialnews.news;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/api/news")
 public class NewsController {
 
     private final NewsService newsService;
@@ -15,7 +14,12 @@ public class NewsController {
         this.newsService = newsService;
     }
 
-    @GetMapping("/api/news")
+    @PostMapping
+    public NewsResponse createNews(@RequestBody NewsCreateRequest request) {
+        return newsService.createNews(request);
+    }
+
+    @GetMapping
     public List<NewsResponse> getNews(@RequestParam String symbol) {
         return newsService.getNewsBySymbol(symbol);
     }
