@@ -3,22 +3,39 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-
-class SummarizeRequest(BaseModel):
+class NewsRequest(BaseModel):
     text: str
-
 
 @app.get("/health")
 def health():
-    return {"status": "ai-service ok"}
+    return {"status": "ok"}
 
+@app.post("/analyze")
+def analyze(req: NewsRequest):
 
-@app.post("/ai/summarize")
-def summarize(request: SummarizeRequest):
-    text = request.text.strip()
+    text = req.text.lower()
 
-    if not text:
-        return {"summary": "요약할 텍스트가 없습니다."}
+    positive_words = ["surge","rise","gain","record","profit","growth"]
+    negative_words = ["drop","fall","loss","decline","crash","risk"]
 
-    summary = text[:100]
-    return {"summary": f"요약 결과: {summary}"}
+    score = 0
+
+    for w in positive_words:
+        if w in text:
+            score += 1
+
+    for w in negative_words:
+        if w in text:
+            score -= 1
+
+    sentiment = "neutral"
+
+    if score > 0:
+        sentiment = "positive"
+    elif score < 0:
+        sentiment = "negative"
+
+    return {
+        "sentiment": sentiment,
+        "score": score
+    }
