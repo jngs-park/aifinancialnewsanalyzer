@@ -21,15 +21,23 @@ public class NewsArticle {
     private String summary;
 
     @Column(nullable = false)
+    private String sentiment;
+
+    @Column(nullable = false)
+    private int score;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     protected NewsArticle() {
     }
 
-    public NewsArticle(String symbol, String title, String summary) {
+    public NewsArticle(String symbol, String title, String summary, String sentiment, int score) {
         this.symbol = symbol;
         this.title = title;
         this.summary = summary;
+        this.sentiment = sentiment;
+        this.score = score;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -47,6 +55,14 @@ public class NewsArticle {
 
     public String getSummary() {
         return summary;
+    }
+
+    public String getSentiment() {
+        return sentiment;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     public LocalDateTime getCreatedAt() {
