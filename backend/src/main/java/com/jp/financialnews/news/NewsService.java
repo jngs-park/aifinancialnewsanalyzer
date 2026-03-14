@@ -40,4 +40,34 @@ public class NewsService {
                 .map(NewsResponse::from)
                 .toList();
     }
+
+    public List<NewsResponse> getNewsBySymbolAndSentiment(String symbol, String sentiment) {
+        return newsRepository.findBySymbolAndSentimentOrderByIdDesc(symbol, sentiment)
+                .stream()
+                .map(NewsResponse::from)
+                .toList();
+    }
+
+    public NewsSentimentStatsResponse getSentimentStats(String symbol) {
+        List<NewsArticle> articles = newsRepository.findBySymbolOrderByIdDesc(symbol);
+
+        long totalCount = articles.size();
+        long positiveCount = articles.stream().filter(a -> "positive".equals(a.getSentiment())).count();
+        long negativeCount = articles.stream().filter(a -> "negative".equals(a.getSentiment())).count();
+        long neutralCount = articles.stream().filter(a -> "neutral".equals(a.getSentiment())).count();
+
+        double averageScore = articles.stream()
+                .mapToInt(NewsArticle::getScore)
+                .average()
+                .orElse(0.0);
+
+        return new NewsSentimentStatsResponse(
+                symbol,
+                averageScore,
+                positiveCount,
+                negativeCount,
+                neutralCount,
+                totalCount
+        );
+    }
 }

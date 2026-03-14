@@ -23,4 +23,19 @@ public class NewsController {
     public List<NewsResponse> getNews(@RequestParam String symbol) {
         return newsService.getNewsBySymbol(symbol);
     }
+
+    @GetMapping("/positive")
+    public List<NewsResponse> getPositiveNews(@RequestParam String symbol) {
+        return newsService.getNewsBySymbolAndSentiment(symbol, "positive");
+    }
+
+    @GetMapping("/negative")
+    public List<NewsResponse> getNegativeNews(@RequestParam String symbol) {
+        return newsService.getNewsBySymbolAndSentiment(symbol, "negative");
+    }
+
+    @GetMapping("/stats")
+    public NewsSentimentStatsResponse getStats(@RequestParam String symbol) {
+        return newsService.getSentimentStats(symbol);
+    }
 }
