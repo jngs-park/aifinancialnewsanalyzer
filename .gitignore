@@ -8,6 +8,11 @@ target/
 # Mac
 .DS_Store
 
+# Python
+ai-service/.venv/
+ai-service/__pycache__/
+*.pyc
+
 # Env
 .env
 

@@ -14,18 +14,60 @@ public class AiService {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public AiAnalyzeResponse analyze(String text) {
-        String url = "http://localhost:8000/analyze";
+
+        String url = "http://ai-service:8000/analyze";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         AiAnalyzeRequest request = new AiAnalyzeRequest(text);
-        HttpEntity<AiAnalyzeRequest> entity = new HttpEntity<>(request, headers);
+
+        HttpEntity<AiAnalyzeRequest> entity =
+                new HttpEntity<>(request, headers);
 
         try {
-            return restTemplate.postForObject(url, entity, AiAnalyzeResponse.class);
+
+            return restTemplate.postForObject(
+                    url,
+                    entity,
+                    AiAnalyzeResponse.class
+            );
+
         } catch (ResourceAccessException e) {
-            throw new AiServerUnavailableException("AI analysis server is not available");
+
+            throw new AiServerUnavailableException(
+                    "AI analysis server is not available"
+            );
+
+        }
+    }
+
+    public AiSummarizeResponse summarize(String text) {
+
+        String url = "http://ai-service:8000/summarize";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        AiAnalyzeRequest request = new AiAnalyzeRequest(text);
+
+        HttpEntity<AiAnalyzeRequest> entity =
+                new HttpEntity<>(request, headers);
+
+        try {
+
+            return restTemplate.postForObject(
+                    url,
+                    entity,
+                    AiSummarizeResponse.class
+            );
+
+        } catch (ResourceAccessException e) {
+
+            throw new AiServerUnavailableException(
+                    "AI summary server is not available"
+            );
+
         }
     }
 }

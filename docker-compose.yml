@@ -1,0 +1,31 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: financialnews-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: financialnews
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  ai-service:
+    build:
+      context: ./ai-service
+    container_name: financialnews-ai
+    ports:
+      - "8000:8000"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: financialnews-backend
+    depends_on:
+      - mysql
+      - ai-service
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql-data:
