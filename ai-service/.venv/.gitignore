@@ -1,0 +1,4 @@
+# Python
+ai-service/.venv/
+ai-service/__pycache__/
+*.pyc
