@@ -1,4 +1,4 @@
-# Financial News AI Dashboard
+# AI Financial News Analyzer
 
 AI 기반 금융 뉴스 감성 분석 백엔드 시스템
 
