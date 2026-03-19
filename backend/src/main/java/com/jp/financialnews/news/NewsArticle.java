@@ -1,9 +1,15 @@
 package com.jp.financialnews.news;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@NoArgsConstructor
 @Table(name = "news_article")
 public class NewsArticle {
 
@@ -29,9 +35,7 @@ public class NewsArticle {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    protected NewsArticle() {
-    }
-
+    @Builder
     public NewsArticle(String symbol, String title, String summary, String sentiment, int score) {
         this.symbol = symbol;
         this.title = title;
@@ -39,33 +43,5 @@ public class NewsArticle {
         this.sentiment = sentiment;
         this.score = score;
         this.createdAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getSymbol() {
-        return symbol;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public String getSentiment() {
-        return sentiment;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
     }
 }

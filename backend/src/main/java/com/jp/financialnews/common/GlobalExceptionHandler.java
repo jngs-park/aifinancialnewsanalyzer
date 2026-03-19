@@ -26,8 +26,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneral(Exception e) {
+        e.printStackTrace(); // 추가
+
         ErrorResponse response = new ErrorResponse(
-                "Unexpected server error",
+                "Unexpected server error: " + e.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

@@ -1,7 +1,7 @@
 services:
   mysql:
     image: mysql:8.4
-    container_name: financialnews-mysql
+    container_name: ai-financial-news-analyzer-mysql
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: financialnews
@@ -13,17 +13,20 @@ services:
   ai-service:
     build:
       context: ./ai-service
-    container_name: financialnews-ai
+    container_name: ai-financial-news-analyzer-ai
     ports:
       - "8000:8000"
 
   backend:
     build:
       context: ./backend
-    container_name: financialnews-backend
+    container_name: ai-financial-news-analyzer-backend
     depends_on:
       - mysql
       - ai-service
+    restart: on-failure
+    environment:
+      - NEWS_API_KEY=${NEWS_API_KEY}
     ports:
       - "8080:8080"
 
