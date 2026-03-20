@@ -35,11 +35,16 @@ public class NewsArticle {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(unique = true, length = 1000)
+    private String url;
+
     @Builder
-    public NewsArticle(String symbol, String title, String summary, String sentiment, int score) {
+    public NewsArticle(String symbol, String title, String summary,
+                       String url, String sentiment, int score) {
         this.symbol = symbol;
         this.title = title;
         this.summary = summary;
+        this.url = url;
         this.sentiment = sentiment;
         this.score = score;
         this.createdAt = LocalDateTime.now();

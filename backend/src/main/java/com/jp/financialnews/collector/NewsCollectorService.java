@@ -1,5 +1,6 @@
 package com.jp.financialnews.collector;
 
+import com.jp.financialnews.ai.AiService;
 import com.jp.financialnews.collector.dto.NewsApiResponse;
 import com.jp.financialnews.news.NewsArticle;
 import com.jp.financialnews.news.NewsRepository;
@@ -7,7 +8,7 @@ import com.jp.financialnews.news.NewsResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.jp.financialnews.ai.AiService;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,15 +32,17 @@ public class NewsCollectorService {
 
     public List<NewsResponse> collectByKeyword(String keyword) {
 
-        String url = baseUrl + "?q=" + keyword + "&apiKey=" + apiKey;
+        String requestUrl = baseUrl + "?q=" + keyword + "&apiKey=" + apiKey;
 
-        NewsApiResponse response = restTemplate.getForObject(url, NewsApiResponse.class);
+        NewsApiResponse response = restTemplate.getForObject(requestUrl, NewsApiResponse.class);
 
         if (response == null || response.getArticles() == null) {
             throw new RuntimeException("News API response is null");
         }
 
         return response.getArticles().stream()
+                .filter(article -> article.getUrl() != null && !article.getUrl().isBlank())
+                .filter(article -> !newsRepository.existsByUrl(article.getUrl()))
                 .map(article -> {
                     String title = article.getTitle() != null ? article.getTitle() : "";
                     String description = article.getDescription() != null ? article.getDescription() : "";
@@ -52,6 +55,7 @@ public class NewsCollectorService {
                             .symbol(keyword)
                             .title(title)
                             .summary(summaryResult.getSummary())
+                            .url(article.getUrl())
                             .sentiment(aiResult.getSentiment())
                             .score(aiResult.getScore())
                             .build();

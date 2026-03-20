@@ -22,13 +22,14 @@ public class NewsService {
 
         AiAnalyzeResponse aiResult = aiService.analyze(textForAnalysis);
 
-        NewsArticle article = new NewsArticle(
-                request.getSymbol(),
-                request.getTitle(),
-                request.getSummary(),
-                aiResult.getSentiment(),
-                aiResult.getScore()
-        );
+        NewsArticle article = NewsArticle.builder()
+                .symbol(request.getSymbol())
+                .title(request.getTitle())
+                .summary(request.getSummary())
+                .url(null)
+                .sentiment(aiResult.getSentiment())
+                .score(aiResult.getScore())
+                .build();
 
         NewsArticle saved = newsRepository.save(article);
         return NewsResponse.from(saved);

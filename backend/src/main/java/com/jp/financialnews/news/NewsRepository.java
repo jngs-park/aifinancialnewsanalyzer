@@ -9,4 +9,5 @@ public interface NewsRepository extends JpaRepository<NewsArticle, Long> {
     List<NewsArticle> findBySymbolOrderByIdDesc(String symbol);
 
     List<NewsArticle> findBySymbolAndSentimentOrderByIdDesc(String symbol, String sentiment);
+    boolean existsByUrl(String url);
 }
