@@ -71,4 +71,12 @@ public class NewsService {
                 totalCount
         );
     }
+
+    public List<NewsSentimentStatsResponse> getLlmSentimentStatsComparison() {
+        return List.of(
+                getSentimentStats("OPENAI"),
+                getSentimentStats("GEMINI"),
+                getSentimentStats("CLAUDE")
+        );
+    }
 }

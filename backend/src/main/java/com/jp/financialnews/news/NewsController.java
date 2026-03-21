@@ -34,4 +34,9 @@ public class NewsController {
     public NewsSentimentStatsResponse getSentimentStats(@PathVariable String symbol) {
         return newsService.getSentimentStats(symbol);
     }
+
+    @GetMapping("/stats/compare")
+    public List<NewsSentimentStatsResponse> getLlmSentimentStatsComparison() {
+        return newsService.getLlmSentimentStatsComparison();
+    }
 }

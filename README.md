@@ -3,8 +3,8 @@
 LLM 시장 뉴스 자동 수집 및 감성 분석 백엔드 시스템
 
 Spring Boot와 FastAPI 기반 AI 서비스를 분리한 마이크로서비스 구조로  
-OpenAI, Gemini, Claude 관련 뉴스를 자동 수집하고,  
-감성 분석 및 요약을 수행한 뒤 데이터를 저장하고 통계를 제공하는 프로젝트입니다.
+OpenAI, Gemini, Claude 관련 뉴스를 자동 수집하고, AI 감성 분석 및 요약을 수행한 뒤, 
+모델별 감성 통계와 비교 API를 제공하는 LLM 뉴스 모니터링 시스템
 
 ---
 
@@ -114,6 +114,15 @@ DB에서는 일관된 기준으로 데이터를 관리할 수 있습니다.
 
 ---
 
+## 7. 모델별 감성 비교 API
+
+OpenAI, Gemini, Claude의 감성 통계를 한 번에 비교할 수 있습니다.
+
+### Example
+- `GET /api/news/stats/compare`
+
+---
+
 # API Examples
 
 ## 수동 뉴스 수집
@@ -122,3 +131,12 @@ DB에서는 일관된 기준으로 데이터를 관리할 수 있습니다.
 
 ```bash
 curl -X POST "http://localhost:8080/api/collector/news?symbol=OPENAI&query=OpenAI%20OR%20ChatGPT"
+
+---
+
+## LLM 뉴스 일괄 수집
+
+### POST `/api/collector/llm`
+
+```bash
+curl -X POST "http://localhost:8080/api/collector/llm"
