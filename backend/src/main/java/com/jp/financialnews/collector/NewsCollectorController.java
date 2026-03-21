@@ -16,7 +16,17 @@ public class NewsCollectorController {
     }
 
     @PostMapping("/news")
-    public List<NewsResponse> collectNews(@RequestParam String keyword) {
-        return newsCollectorService.collectByKeyword(keyword);
+    public List<NewsResponse> collectNews(
+            @RequestParam String symbol,
+            @RequestParam String query
+    ) {
+        return newsCollectorService.collectNews(symbol, query);
+    }
+
+    @PostMapping("/llm")
+    public void collectLlmNews() {
+        newsCollectorService.collectNews("OPENAI", "OpenAI OR ChatGPT");
+        newsCollectorService.collectNews("GEMINI", "Google Gemini");
+        newsCollectorService.collectNews("CLAUDE", "Anthropic Claude");
     }
 }

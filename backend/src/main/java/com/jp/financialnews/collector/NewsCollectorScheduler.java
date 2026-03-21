@@ -12,9 +12,15 @@ public class NewsCollectorScheduler {
         this.newsCollectorService = newsCollectorService;
     }
 
-    @Scheduled(fixedRate = 60000)
-    public void collectNvidiaNews() {
-        newsCollectorService.collectByKeyword("NVIDIA");
-        System.out.println("Scheduled news collection completed for NVIDIA");
+    @Scheduled(fixedRate = 3600000)
+    public void collectLlmNews() {
+        newsCollectorService.collectNews("OPENAI", "OpenAI OR ChatGPT");
+        System.out.println("Scheduled news collection completed for OPENAI");
+
+        newsCollectorService.collectNews("GEMINI", "Google Gemini");
+        System.out.println("Scheduled news collection completed for GEMINI");
+
+        newsCollectorService.collectNews("CLAUDE", "Anthropic Claude");
+        System.out.println("Scheduled news collection completed for CLAUDE");
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,9 +32,10 @@ public class NewsCollectorService {
         this.aiService = aiService;
     }
 
-    public List<NewsResponse> collectByKeyword(String keyword) {
+    public List<NewsResponse> collectNews(String symbol, String query) {
 
-        String requestUrl = baseUrl + "?q=" + keyword + "&apiKey=" + apiKey;
+        String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+        String requestUrl = baseUrl + "?q=" + encodedQuery + "&apiKey=" + apiKey;
 
         NewsApiResponse response = restTemplate.getForObject(requestUrl, NewsApiResponse.class);
 
@@ -52,7 +55,7 @@ public class NewsCollectorService {
                     var summaryResult = aiService.summarize(textForAi);
 
                     NewsArticle entity = NewsArticle.builder()
-                            .symbol(keyword)
+                            .symbol(symbol)
                             .title(title)
                             .summary(summaryResult.getSummary())
                             .url(article.getUrl())
